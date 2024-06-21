@@ -51,9 +51,11 @@ def delete_mail_outlook() -> None:
                     if ('COMObject <unknown>' in email or ' - User unknown' in email) and k == 0:
                         folder.Items[i].Delete()
                         i -= 1
-                    elif date_sent < dnm and k == 0:
-                        folder.Items[i].Delete()
-                        i -= 1
+                    else:
+                        date_sent = folder.Items[i].SentOn.strftime('%Y-%m-%d')
+                        if date_sent < dnm and k == 0 and ('COMObject <unknown>' in email or ' - User unknown' in email):
+                            folder.Items[i].Delete()
+                            i -= 1
 
                     # Outbox conditions
                     elif 'Error' in email and k == 1:
