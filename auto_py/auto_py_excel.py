@@ -7,16 +7,18 @@ import pythoncom
 from UliPlot.XLSX import auto_adjust_xlsx_column_width
 import importlib.util
 import threading
+from auto_py_outlook import error_mail
 
 
-def module_from_file(module_name, file_path):
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+# If you need to load a module from another folder
+# def module_from_file(module_name, file_path):
+#     spec = importlib.util.spec_from_file_location(module_name, file_path)
+#     module = importlib.util.module_from_spec(spec)
+#     spec.loader.exec_module(module)
+#     return module
 
 
-auto_py_outlook_agro = module_from_file('auto_py_outlook_agro', r'P:/Сотрудники/Общая информация/py/py_outlook/auto_py_outlook_agro.py')
+# auto_py_outlook_agro = module_from_file('~module_name', r'~file_path')
 
 
 def kill_proc_win_(proc_: str) -> None:
@@ -64,7 +66,7 @@ def excel_macro(folder: str, file: str, mud: str, macro: str, kill_excel: bool =
         print(f'Macro {macro} in {folder}{file} worked!')
     except Exception as _:
         print(f'ERROR: Failed to run macro {macro} in {folder}{file}!')
-        auto_py_outlook_agro.error_mail(_, f'{folder}{file}')
+        error_mail(_, f'{folder}{file}')
         wbk.Close()
         exl.Quit()
 
@@ -98,7 +100,7 @@ def refresh_excel(folder: str, file: str, kill_excel: bool = False) -> None:
         print(f'The file {folder}{file} has been updated!')
     except Exception as _:
         print(f'ERROR: The file {folder}{file} has not been updated!')
-        auto_py_outlook_agro.error_mail(_, f'{folder}{file}')
+        error_mail(_, f'{folder}{file}')
         wbk.Close()
         exl.Quit()
 
@@ -125,7 +127,7 @@ def refresh_excel_files(folder_path: str, excel_files: list, kill_excel: bool = 
         for t in threads:
             t.join()
     except Exception as _:
-        auto_py_outlook_agro.error_mail(_, f'Error when refresh excel files!')
+        error_mail(_, f'Error when refresh excel files!')
 
 
 def copy_excel(path_from: str, path_to: str, file: str) -> None:
@@ -146,7 +148,7 @@ def copy_excel(path_from: str, path_to: str, file: str) -> None:
         shutil.copy(f'{path_from}{file}', f'{path_to}{file}')
         os.chmod(f'{path_to}{file}', S_IREAD)
     except Exception as _:
-        auto_py_outlook_agro.error_mail(_, f'Error when copy {file} to {path_to}!')
+        error_mail(_, f'Error when copy {file} to {path_to}!')
 
 
 def file_date(path: str, file: str, all_files: bool = False) -> str:
@@ -178,7 +180,7 @@ def file_date(path: str, file: str, all_files: bool = False) -> str:
             d = datetime.fromtimestamp(os.path.getmtime(os.path.join(path, file))).strftime('%Y-%m-%d')
             return d
     except Exception as _:
-        auto_py_outlook_agro.error_mail(_, 'Error getting file update date!')
+        error_mail(_, 'Error getting file update date!')
 
 
 def filepath_date(path: str) -> str:
@@ -198,7 +200,7 @@ def filepath_date(path: str) -> str:
         d = datetime.fromtimestamp(os.path.getmtime(path)).strftime('%Y-%m-%d')
         return d
     except Exception as _:
-        auto_py_outlook_agro.error_mail(_, 'Error getting file update date!')
+        error_mail(_, 'Error getting file update date!')
 
 
 def last_date_sent_mail(subject):
