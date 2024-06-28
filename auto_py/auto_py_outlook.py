@@ -114,7 +114,6 @@ def delete_mail_outlook() -> None:
             try:
                 while str(folder.Items[i]) != 'None':
                     email = str(folder.Items[i])
-                    date_sent = folder.Items[i].SentOn.strftime('%Y-%m-%d')
 
                     # Inbox conditions
                     if ('COMObject <unknown>' in email or ' - User unknown' in email) and k == 0:
@@ -122,7 +121,7 @@ def delete_mail_outlook() -> None:
                         i -= 1
                     else:
                         date_sent = folder.Items[i].SentOn.strftime('%Y-%m-%d')
-                        if date_sent < dnm and k == 0 and ('COMObject <unknown>' in email or ' - User unknown' in email):
+                        if date_sent < dnm and k == 0:
                             folder.Items[i].Delete()
                             i -= 1
 
