@@ -116,7 +116,7 @@ def delete_mail_outlook() -> None:
                     email = str(folder.Items[i])
 
                     # Inbox conditions
-                    if ('COMObject <unknown>' in email or ' - User unknown' in email) and k == 0:
+                    if ('COMObject <unknown>' in email or ' - User unknown' in email or 'Automatic reply:' in email) and k == 0:
                         folder.Items[i].Delete()
                         i -= 1
                     else:
